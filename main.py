@@ -31,9 +31,13 @@ def addPassword(app):
     print("Add a new password:\n")
     domain = input("Domain: ")
     user = input("User: ")
-    password = input("Password: ")
-    app.addPassword(domain, user, password)
-    print("Added password!")
+    while True:
+        password = getpass("Password: ")
+        if password == getpass("Retype Password: "):
+            app.addPassword(domain, user, password)
+            print("Added password!")
+            return
+        print("Passwords did not match!")
 
 
 def showPassword(app):
@@ -53,11 +57,15 @@ def editPassword(app):
     print("Edit a password:\n")
     domain = input("Domain: ")
     user = input("User: ")
-    password = input("New Password: ")
-    if app.editPassword(domain, user, password):
-        print("Updated password!")
-    else:
-        print("Couldn't find the password!")
+    while True:
+        password = getpass("New Password: ")
+        if password == getpass("Retype New Password: "):
+            if app.editPassword(domain, user, password):
+                print("Updated password!")
+            else:
+                print("Couldn't find the password!")
+            return
+        print("Passwords did not match!")
 
 
 def removePassword(app):
