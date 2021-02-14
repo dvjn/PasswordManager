@@ -1,6 +1,10 @@
 # Password Manager
 
-A **secure** cli password manager in **python**.
+A **secure** menu driven cli password manager in **python**.
+
+## Demo
+
+![Demo](/demo.svg)
 
 ## Usage
 
