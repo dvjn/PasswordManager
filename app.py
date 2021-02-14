@@ -1,7 +1,8 @@
+from base64 import b64decode, b64encode, urlsafe_b64encode
+from hashlib import sha256
 from os import urandom
 from sqlite3 import connect
-from base64 import urlsafe_b64encode, b64decode, b64encode
-from hashlib import sha256
+
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -11,23 +12,22 @@ createTableQuery = """
     CREATE TABLE `{}` ({})
 """
 checkTableExistsQuery = """
-    SELECT name 
-    FROM sqlite_master 
+    SELECT name
+    FROM sqlite_master
     WHERE type='table' and name='{}'
 """
 checkConfigExistsQuery = """
     SELECT COUNT(*)
     FROM config
     WHERE key='{}'
-
 """
 getConfigQuery = """
-    SELECT value 
-    FROM config 
+    SELECT value
+    FROM config
     WHERE key='{}'
 """
 insertConfigQuery = """
-    INSERT INTO config 
+    INSERT INTO config
     VALUES ('{}', '{}')
 """
 getPasswordsQuery = """

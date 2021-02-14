@@ -1,5 +1,6 @@
 import os
 from getpass import getpass
+
 from app import App
 
 
@@ -25,29 +26,6 @@ def tryRegister(app):
         print("Passwords did not match!")
 
 
-commands = """
-Commands:
-    a) Add password
-    s) Show password
-    e) Edit password
-    r) Remove Password
-    q) Quit
-"""
-
-
-def getCommand(app):
-    clear()
-    print("Password Manager")
-    passwords = app.getPasswords()
-    print()
-    if passwords:
-        print("\n".join("\t".join(password) for password in passwords))
-    else:
-        print("No passwords")
-    print(commands)
-    return input("Enter command: ")
-
-
 def addPassword(app):
     clear()
     print("Add a new password:\n")
@@ -56,6 +34,18 @@ def addPassword(app):
     password = input("Password: ")
     app.addPassword(domain, user, password)
     print("Added password!")
+
+
+def showPassword(app):
+    clear()
+    print("Show password:\n")
+    domain = input("Domain: ")
+    user = input("User: ")
+    password = app.getPlainPassword(domain, user)
+    if password is not None:
+        print("Password: " + password)
+    else:
+        print("Couldn't find the password!")
 
 
 def editPassword(app):
@@ -81,35 +71,45 @@ def removePassword(app):
         print("Couldn't find the password!")
 
 
-def showPassword(app):
-    clear()
-    print("Show password:\n")
-    domain = input("Domain: ")
-    user = input("User: ")
-    password = app.getPlainPassword(domain, user)
-    if password is not None:
-        print("Password: " + password)
-    else:
-        print("Couldn't find the password!")
-
-
-commandMapper = {
+commandMap = {
     "a": addPassword,
-    "e": editPassword,
     "s": showPassword,
+    "e": editPassword,
     "r": removePassword,
 }
+
+
+commands = """
+Commands:
+    a) Add password
+    s) Show password
+    e) Edit password
+    r) Remove Password
+    q) Quit
+"""
+
+
+def getCommand(app):
+    clear()
+    print("Password Manager")
+    passwords = app.getPasswords()
+    print()
+    if passwords:
+        print("\n".join("\t".join(password) for password in passwords))
+    else:
+        print("No passwords")
+    print(commands)
+    return input("Enter command: ")
 
 
 def main():
     app = App()
     if app.isMasterPassSet():
         print("Welcome back!")
-        loggedIn = tryLogin(app)
-        if loggedIn:
+        if tryLogin(app):
             print("Logged in!")
         else:
-            print("Coudn't log you in!")
+            print("Couldn't log you in!")
             return
     else:
         print("Hey there!")
@@ -119,8 +119,8 @@ def main():
     command = ""
     while command != "q":
         command = getCommand(app)
-        if command in commandMapper:
-            commandMapper[command](app)
+        if command in commandMap:
+            commandMap[command](app)
             input()
 
 
