@@ -102,26 +102,33 @@ def getCommand(app):
     return input("Enter command: ")
 
 
+def waitForReturn():
+    input("Press enter to continue... ")
+
+
 def main():
-    app = App()
-    if app.isMasterPassSet():
-        print("Welcome back!")
-        if tryLogin(app):
-            print("Logged in!")
+    try:
+        app = App()
+        if app.isMasterPassSet():
+            print("Welcome back!")
+            if tryLogin(app):
+                print("Logged in!")
+            else:
+                print("Couldn't log you in!")
+                return
         else:
-            print("Couldn't log you in!")
-            return
-    else:
-        print("Hey there!")
-        print("Let's setup your password manager!")
-        tryRegister(app)
-    input()
-    command = ""
-    while command != "q":
-        command = getCommand(app)
-        if command in commandMap:
-            commandMap[command](app)
-            input()
+            print("Hey there!")
+            print("Let's setup your password manager!")
+            tryRegister(app)
+        waitForReturn()
+        command = ""
+        while command != "q":
+            command = getCommand(app)
+            if command in commandMap:
+                commandMap[command](app)
+                waitForReturn()
+    except KeyboardInterrupt:
+        print("\nExiting...")
 
 
 if __name__ == "__main__":
