@@ -100,8 +100,8 @@ Commands:
 def getCommand(app):
     clear()
     print("Password Manager")
-    passwords = app.getPasswords()
     print()
+    passwords = app.getPasswords()
     if passwords:
         print("\n".join("\t".join(password) for password in passwords))
     else:
@@ -116,6 +116,9 @@ def waitForReturn():
 
 def main():
     try:
+        clear()
+        print("Password Manager")
+        print()
         app = App()
         if app.isMasterPassSet():
             print("Welcome back!")
